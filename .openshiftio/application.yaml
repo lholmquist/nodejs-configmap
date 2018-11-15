@@ -104,6 +104,13 @@ objects:
     spec:
       template:
         spec:
+          volumes:
+          - configMap:
+              name: app-config
+              items:
+              - key: "app-config.yml"
+                path: "app-config.yml"
+            name: config
           containers:
             - readinessProbe:
                 httpGet:
@@ -121,6 +128,9 @@ objects:
               name: nodejs-configmap
               securityContext:
                 privileged: false
+              volumeMounts:
+              - name: config
+                mountPath: /app/config
               ports:
                 - containerPort: 8080
                   name: http
